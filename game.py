@@ -1,36 +1,13 @@
-from typing import Union
-
 import pygame
 import sky
 from sky.colours import *
 
 
-class Game:
+class Game(sky.Location):
     def __init__(self, main) -> None:
-        self.graphics = main.graphics
-        self.events = main.events
-        self.win = main.win
-        self.cam = main.cam
-        self.main = main
+        super().__init__(main)
 
         self.button = sky.Button((200, 0, 200, 100), "hi", cam=self.cam)
-
-    # called on location startup
-    # args are passed in from main
-    def start(self, args: Union[None, dict]) -> None:
-        pass
-
-    # called when window is resized
-    def scale(self) -> None:
-        pass
-
-    # called when main switches locations
-    def end(self) -> None:
-        pass
-
-    # called when app closes
-    def cleanup(self) -> None:
-        pass
 
     def update(self, dt: float) -> None:
         self.cam.update(self.button.rect.center, dt)

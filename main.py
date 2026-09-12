@@ -36,9 +36,9 @@ class Main:
 
         self.scale()
 
-    def set_location(self, loc, args: Union[None, dict] = None) -> None:
+    def set_location(self, loc: str, args: Union[None, dict] = None) -> None:
         if self.location is not None:
-            self.locations[self.location].end()
+            self.locations[self.location].stop()
 
         self.location = loc
         self.locations[self.location].start(args)
@@ -49,7 +49,7 @@ class Main:
 
     def close(self) -> None:
         if self.location is not None:
-            self.locations[self.location].end()
+            self.locations[self.location].stop()
 
         for loc in self.locations.values():
             loc.cleanup()
