@@ -57,13 +57,18 @@ class Button:
     def click(self) -> bool:
         return self._click
 
-    def update(self, events: Events) -> None:
+    def _get_rect(self):
         if self._cam is not None:
             rect = self._rect.copy()
             rect.x += self._cam.x
             rect.y += self._cam.y
         else:
             rect = self._rect
+            
+        return rect
+
+    def update(self, events: Events) -> None:
+        rect = self._get_rect()
 
         self._click = False
         self._hover = False
@@ -74,12 +79,7 @@ class Button:
                 self._click = True
 
     def draw(self, graphics: Graphics) -> None:
-        if self._cam is not None:
-            rect = self._rect.copy()
-            rect.x += self._cam.x
-            rect.y += self._cam.y
-        else:
-            rect = self._rect
+        rect = self._get_rect()
 
         pygame.draw.rect(graphics.surf, self._style["highlight"] if self._hover else self._style["colour"], rect)
         if self._style["border size"] > 0:
