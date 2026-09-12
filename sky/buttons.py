@@ -6,11 +6,11 @@ from .events import Events
 from .graphics import Graphics
 from .camera import Camera
 
-
 DEFAULT_STYLE = {"colour": "black",
                  "highlight": "yellow",
-                 "border colour": "black",
+                 "border colour": "white",
                  "border size": 0,
+                 "rounding": 0,
                  "font": "arial",
                  "font size": 30,
                  "font colour": "white"}
@@ -57,14 +57,14 @@ class Button:
     def click(self) -> bool:
         return self._click
 
-    def _get_rect(self):
+    def _get_rect(self) -> pygame.Rect:
         if self._cam is not None:
             rect = self._rect.copy()
             rect.x += self._cam.x
             rect.y += self._cam.y
         else:
             rect = self._rect
-            
+
         return rect
 
     def update(self, events: Events) -> None:
@@ -81,7 +81,9 @@ class Button:
     def draw(self, graphics: Graphics) -> None:
         rect = self._get_rect()
 
-        pygame.draw.rect(graphics.surf, self._style["highlight"] if self._hover else self._style["colour"], rect)
+        pygame.draw.rect(graphics.surf, self._style["highlight"] if self._hover else self._style["colour"], rect, 0,
+                         self._style["rounding"], self._style["rounding"], self._style["rounding"],
+                         self._style["rounding"])
         if self._style["border size"] > 0:
             pygame.draw.rect(graphics.surf, self._style["border colour"], rect, self._style["border size"])
 
