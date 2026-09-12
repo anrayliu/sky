@@ -27,7 +27,7 @@ class Button:
         else:
             self._rect = pygame.Rect(rect)
 
-        if center != None:
+        if center is not None:
             self._rect.center = pygame.Rect(*center).center
 
         self._text = text
@@ -53,6 +53,8 @@ class Button:
             rect = self._rect.copy()
             rect.x += self._cam.x
             rect.y += self._cam.y
+        else:
+            rect = self._rect
 
         click = False
         self._hover = False
@@ -69,10 +71,12 @@ class Button:
             rect = self._rect.copy()
             rect.x += self._cam.x
             rect.y += self._cam.y
+        else:
+            rect = self._rect
 
         pygame.draw.rect(graphics.surf, self._style["highlight"] if self._hover else self._style["colour"], rect)
         if self._style["border size"] > 0:
-            pygame.draw.rect(graphics.surface, self._style["border colour"], rect, self._style["border size"])
+            pygame.draw.rect(graphics.surf, self._style["border colour"], rect, self._style["border size"])
 
         graphics.write(self._text, (0, 0), font=self._style["font"], size=self._style["font size"],
                        colour=self._style["font colour"], center=rect, use_cam=False)

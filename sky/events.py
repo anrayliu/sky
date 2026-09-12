@@ -7,7 +7,7 @@ class Events:
     def __init__(self, target_fps: int) -> None:
         self._quit = False
         self._click = False
-        self._input = (None, None, None)
+        self._input = (None, "", None)
 
         self._keys_down = None
         self._mouse_down = None
@@ -46,10 +46,10 @@ class Events:
     def mouse(self) -> Tuple[int, int]:
         return pygame.mouse.get_pos()
 
-    def update(self) -> None:
+    def update(self) -> float:
         self._quit = False
         self._click = False
-        self._input = (None, None, None)
+        self._input = (None, "", None)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

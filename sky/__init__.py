@@ -1,5 +1,3 @@
-import pygame
-
 from .colours import *
 from .events import Events
 from .buttons import Button

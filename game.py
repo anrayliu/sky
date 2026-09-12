@@ -32,7 +32,7 @@ class Game:
     def cleanup(self) -> None:
         pass
 
-    def update(self, dt: int) -> None:
+    def update(self, dt: float) -> None:
         self.cam.update(self.button.rect.center, dt)
 
         click, hover = self.button.update(self.events)

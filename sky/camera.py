@@ -26,11 +26,11 @@ class Camera:
     def y(self) -> int:
         return -self._rect.y + self._shakey
 
-    def update(self, pos: Tuple[int, int], dt: int, speed: int = 20) -> None:
+    def update(self, pos: Tuple[int, int], dt: float, speed: int = 20) -> None:
         self._rect.centerx += (pos[0] - self._rect.centerx) / speed * dt
         self._rect.centery += (pos[1] - self._rect.centery) / speed * dt
 
-        if self._restriction != None:
+        if self._restriction is not None:
             self._rect.clamp_ip(self._restriction)
 
         if 0 < self._initial_force < 0.1:

@@ -24,9 +24,6 @@ class Graphics:
 
     @surf.setter
     def surf(self, new_surf: pygame.Surface) -> None:
-        if not isinstance(new_surf, pygame.Surface):
-            raise ValueError("must be a surface")
-
         self._target_surf = new_surf
 
     def load_folder(self, path: str, sizes: Union[None, Dict[str, Tuple[int, int]]] = None) -> int:
@@ -56,19 +53,19 @@ class Graphics:
              center: Union[None, pygame.Rect] = None, use_cam: bool = True) -> pygame.Rect:
         image_ = self._images[image].copy()
 
-        if size != None:
+        if size is not None:
             image_ = pygame.transform.scale(image_, size)
 
-        if angle != None:
+        if angle is not None:
             if radians:
                 angle = math.degrees(angle)
             image_ = pygame.transform.rotate(image_, angle)
             pos = image_.get_rect(center=pos).topleft
 
-        if transparency != None:
+        if transparency is not None:
             image_.set_alpha(transparency)
 
-        if center != None:
+        if center is not None:
             pos = image_.get_rect(center=pygame.Rect(center).center).topleft
 
         if use_cam and self._cam is not None:
@@ -76,7 +73,7 @@ class Graphics:
 
         return self._target_surf.blit(image_, pos)
 
-    def write(self, text: str, pos: Union[int, int], size: int = 30, colour: Union[pygame.Color, str] = "white",
+    def write(self, text: str, pos: Tuple[int, int], size: int = 30, colour: Union[pygame.Color, str] = "white",
               transparency: Union[None, int] = None, font: str = "arial", center: Union[None, pygame.Rect] = None,
               use_cam: bool = True) -> pygame.Rect:
         try:
@@ -96,10 +93,10 @@ class Graphics:
 
         text_ = font_.render(text, True, colour)
 
-        if transparency != None:
+        if transparency is not None:
             text_.set_alpha(transparency)
 
-        if center != None:
+        if center is not None:
             pos = text_.get_rect(center=pygame.Rect(center).center).topleft
 
         if use_cam and self._cam is not None:
