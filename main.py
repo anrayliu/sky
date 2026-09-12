@@ -52,7 +52,7 @@ class Main:
 
         pygame.quit()
         sys.exit()
-        
+
     def run(self) -> None:
         self.set_location("game")
 

@@ -50,7 +50,7 @@ class Events:
         self._quit = False
         self._click = False
         self._input = (None, None, None)
-        
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self._quit = True

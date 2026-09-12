@@ -6,18 +6,18 @@ from .events import Events
 from .graphics import Graphics
 from .camera import Camera
 
-
-DEFAULT_STYLE = {"colour":"black",
-                 "highlight":"yellow",
-                 "border colour":"black",
-                 "border size":0,
-                 "font":"arial",
-                 "font size":30,
-                 "font colour":"white"}
+DEFAULT_STYLE = {"colour": "black",
+                 "highlight": "yellow",
+                 "border colour": "black",
+                 "border size": 0,
+                 "font": "arial",
+                 "font size": 30,
+                 "font colour": "white"}
 
 
 class Button:
-    def __init__(self, rect: Union[pygame.Rect, Tuple[int, int, int, int]], text: str, style: Union[None, dict] = None, center: Union[None, pygame.Rect] = None, cam: Camera = None) -> None:
+    def __init__(self, rect: Union[pygame.Rect, Tuple[int, int, int, int]], text: str, style: Union[None, dict] = None,
+                 center: Union[None, pygame.Rect] = None, cam: Camera = None) -> None:
         self._style = DEFAULT_STYLE.copy()
         if style is not None:
             self._style.update(style)
@@ -29,7 +29,7 @@ class Button:
 
         if center != None:
             self._rect.center = pygame.Rect(*center).center
-        
+
         self._text = text
 
         self._hover = False
@@ -63,7 +63,7 @@ class Button:
                 click = True
 
         return click, self._hover
-        
+
     def draw(self, graphics: Graphics) -> None:
         if self._cam is not None:
             rect = self._rect.copy()
@@ -73,5 +73,6 @@ class Button:
         pygame.draw.rect(graphics.surf, self._style["highlight"] if self._hover else self._style["colour"], rect)
         if self._style["border size"] > 0:
             pygame.draw.rect(graphics.surface, self._style["border colour"], rect, self._style["border size"])
-            
-        graphics.write(self._text, (0, 0), font=self._style["font"], size=self._style["font size"], colour=self._style["font colour"], center=rect, use_cam=False)
+
+        graphics.write(self._text, (0, 0), font=self._style["font"], size=self._style["font size"],
+                       colour=self._style["font colour"], center=rect, use_cam=False)

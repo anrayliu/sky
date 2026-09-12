@@ -1,4 +1,4 @@
-import pygame 
+import pygame
 
 from .colours import *
 from .events import Events

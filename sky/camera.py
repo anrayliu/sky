@@ -25,11 +25,11 @@ class Camera:
     @property
     def y(self) -> int:
         return -self._rect.y + self._shakey
-        
+
     def update(self, pos: Tuple[int, int], dt: int, speed: int = 20) -> None:
         self._rect.centerx += (pos[0] - self._rect.centerx) / speed * dt
         self._rect.centery += (pos[1] - self._rect.centery) / speed * dt
-        
+
         if self._restriction != None:
             self._rect.clamp_ip(self._restriction)
 
@@ -41,7 +41,7 @@ class Camera:
 
             self._shakey = math.sin(self._timery) * self._initial_force * self._force_multiplier
             self._shakex = math.sin(self._timerx) * self._initial_force * self._force_multiplier
-    
+
             self._initial_force += (0 - self._initial_force) / self._shake_duration * dt
 
     def shake(self, initial_force: int = 10, force_multiplier: int = 5, shake_duration: int = 10) -> None:

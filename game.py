@@ -7,7 +7,7 @@ from sky.colours import *
 
 class Game:
     def __init__(self, main) -> None:
-        self.graphics = main.graphics 
+        self.graphics = main.graphics
         self.events = main.events
         self.win = main.win
         self.cam = main.cam
