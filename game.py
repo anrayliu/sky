@@ -35,8 +35,8 @@ class Game:
     def update(self, dt: float) -> None:
         self.cam.update(self.button.rect.center, dt)
 
-        click, hover = self.button.update(self.events)
-        if click:
+        self.button.update(self.events)
+        if self.button.click:
             print("hi!")
 
         if self.events.input[1] == "space":

@@ -6,6 +6,7 @@ from .events import Events
 from .graphics import Graphics
 from .camera import Camera
 
+
 DEFAULT_STYLE = {"colour": "black",
                  "highlight": "yellow",
                  "border colour": "black",
@@ -31,10 +32,10 @@ class Button:
             self._rect.center = pygame.Rect(*center).center
 
         self._text = text
+        self._cam = cam
 
         self._hover = False
-
-        self._cam = cam
+        self._click = False
 
     @property
     def rect(self) -> pygame.Rect:
@@ -48,7 +49,15 @@ class Button:
     def text(self) -> str:
         return self._text
 
-    def update(self, events: Events) -> Tuple[bool, bool]:
+    @property
+    def hover(self) -> bool:
+        return self._hover
+
+    @property
+    def click(self) -> bool:
+        return self._click
+
+    def update(self, events: Events) -> None:
         if self._cam is not None:
             rect = self._rect.copy()
             rect.x += self._cam.x
@@ -56,15 +65,13 @@ class Button:
         else:
             rect = self._rect
 
-        click = False
+        self._click = False
         self._hover = False
 
         if rect.collidepoint(events.mouse):
             self._hover = True
             if events.click:
-                click = True
-
-        return click, self._hover
+                self._click = True
 
     def draw(self, graphics: Graphics) -> None:
         if self._cam is not None:
@@ -78,5 +85,6 @@ class Button:
         if self._style["border size"] > 0:
             pygame.draw.rect(graphics.surf, self._style["border colour"], rect, self._style["border size"])
 
+        # don't apply cam offset because rect already has it applied
         graphics.write(self._text, (0, 0), font=self._style["font"], size=self._style["font size"],
                        colour=self._style["font colour"], center=rect, use_cam=False)
