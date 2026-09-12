@@ -34,9 +34,12 @@ class Main:
         self.locations = {"game": Game(self)}
         self.location = None
 
+        self.scale()
+
     def set_location(self, loc, args: Union[None, dict] = None) -> None:
         if self.location is not None:
             self.locations[self.location].end()
+
         self.location = loc
         self.locations[self.location].start(args)
 
@@ -45,7 +48,8 @@ class Main:
             loc.scale()
 
     def close(self) -> None:
-        self.locations[self.location].end()
+        if self.location is not None:
+            self.locations[self.location].end()
 
         for loc in self.locations.values():
             loc.cleanup()

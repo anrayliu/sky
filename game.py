@@ -18,7 +18,7 @@ class Game:
     # called on location startup
     # args are passed in from main
     def start(self, args: Union[None, dict]) -> None:
-        self.scale()
+        pass
 
     # called when window is resized
     def scale(self) -> None:
