@@ -1,36 +1,53 @@
-import pygame
 import random
+import math
+from typing import Tuple, Union
+
+import pygame
 
 
 class Camera:
-    def __init__(self, size, restriction=None):
-        self.rect = pygame.Rect((0, 0, *size))
-        self.x, self.y = self.shakex, self.shakey = (0, 0)
-        self.restriction = restriction
+    def __init__(self, size: Tuple[int, int], restriction: Union[None, pygame.Rect] = None) -> None:
+        self._rect = pygame.Rect((0, 0, *size))
+
+        self._timerx, self._timery = (0, 0)
+        self._shakex, self._shakey = (0, 0)
+
+        self._initial_force = 0
+        self._force_multiplier = 0
+        self._shake_duration = 1
+
+        self._restriction = restriction
+
+    @property
+    def x(self) -> int:
+        return -self._rect.x + self._shakex
+
+    @property
+    def y(self) -> int:
+        return -self._rect.y + self._shakey
         
-    def update(self, pos, dt=1):
-        #self.rect.centerx += (pos[0] - self.rect.centerx) / (100 / dt)
-        #self.rect.centery += (pos[0] - self.rect.centery) / (100 / dt)
-        self.rect.center = pos
+    def update(self, pos: Tuple[int, int], dt: int, speed: int = 20) -> None:
+        self._rect.centerx += (pos[0] - self._rect.centerx) / speed * dt
+        self._rect.centery += (pos[1] - self._rect.centery) / speed * dt
         
-        if self.restriction != None:
-            self.rect.clamp_ip(self.restriction)
-        
-        self.x = -self.rect.x + self.shakex 
-        self.y = -self.rect.y + self.shakey 
-        
-        self.shakex *= -0.8
-        if self.shakex < 0.01:
-            self.shakex = 0
-        self.shakey *= -0.8
-        if self.shakey < 0.01:
-            self.shakey = 0
-        
-    def moved(self, pos, shake=True):
-        x = self.x if shake else -self.rect.x
-        y = self.y if shake else -self.rect.y
-        return (pos[0] + x, pos[1] + y)
-        
-    def shake(self, value):
-        self.shakex = value * random.choice([-1, 1])
-        self.shakey = value * random.choice([-1, 1])
+        if self._restriction != None:
+            self._rect.clamp_ip(self._restriction)
+
+        if 0 < self._initial_force < 0.1:
+            self._initial_force = 0
+        else:
+            self._timerx += dt
+            self._timery += dt
+
+            self._shakey = math.sin(self._timery) * self._initial_force * self._force_multiplier
+            self._shakex = math.sin(self._timerx) * self._initial_force * self._force_multiplier
+    
+            self._initial_force += (0 - self._initial_force) / self._shake_duration * dt
+
+    def shake(self, initial_force: int = 10, force_multiplier: int = 5, shake_duration: int = 10) -> None:
+        self._timerx = random.uniform(0, 6.28)
+        self._timery = random.uniform(0, 6.28)
+
+        self._initial_force = initial_force
+        self._force_multiplier = force_multiplier
+        self._shake_duration = shake_duration
