@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Tuple, Callable
 
 import pygame
 
@@ -15,6 +15,8 @@ class Events:
 
         self._target_fps = target_fps
         self._clock = pygame.time.Clock()
+
+        self._event_handlers = {}
 
         pygame.event.pump()
 
@@ -46,6 +48,9 @@ class Events:
     def mouse(self) -> Tuple[int, int]:
         return pygame.mouse.get_pos()
 
+    def add_event_handler(self, event: int, handler: Callable[[pygame.Event], any]) -> None:
+        self._event_handlers[event] = handler
+
     def update(self) -> float:
         self._quit = False
         self._click = False
@@ -59,4 +64,8 @@ class Events:
             elif event.type == pygame.KEYDOWN:
                 self._input = (event.unicode, pygame.key.name(event.key), event.key)
 
-        return self._clock.tick(self._target_fps) / 1000 * 60
+            # for handling custom events
+            if event.type in self._event_handlers:
+                self._event_handlers[event.type](event)
+
+        return self._clock.tick(self._target_fps) * 60 / 1000
