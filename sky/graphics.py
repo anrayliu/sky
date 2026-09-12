@@ -11,7 +11,8 @@ class Graphics:
     def __init__(self, surf: pygame.Surface, cam: Camera = None) -> None:
         self._target_surf = surf
 
-        self._images = {}
+        self._original_images = {}
+        self._image_cache = {}
 
         self._font_objs = {}
         self._font_paths = []
@@ -38,40 +39,48 @@ class Graphics:
                 name = os.path.splitext(file)[0]
 
                 img = pygame.image.load(os.path.join(path, file)).convert_alpha()
+                self._original_images[name] = img
 
                 if sizes is not None and name in sizes:
-                    img = pygame.transform.smoothscale(img, sizes[name])
-
-                self._images[name] = img
+                    # build a default cache key
+                    self._image_cache[name + str(sizes[name]) + str(None) + str(None)] = pygame.transform.smoothscale(img, sizes[name])
 
                 loaded += 1
 
         return loaded
 
-    def draw(self, image: str, pos: Union[int, int], angle: Union[None, int, float] = None,
+    def draw(self, name: str, pos: Union[int, int], angle: Union[None, int, float] = None,
              size: Union[None, Tuple[int, int]] = None, transparency: Union[None, int] = None, radians: bool = False,
              center: Union[None, pygame.Rect] = None, use_cam: bool = True) -> pygame.Rect:
-        image_ = self._images[image].copy()
+        
+        cache_key = name + str(size) + str(angle) + str(transparency)
 
-        if size is not None:
-            image_ = pygame.transform.scale(image_, size)
+        if cache_key in self._image_cache:
+            img = self._image_cache[cache_key]
+        else:
+            img = self._original_images[name].copy()
 
-        if angle is not None:
-            if radians:
-                angle = math.degrees(angle)
-            image_ = pygame.transform.rotate(image_, angle)
-            pos = image_.get_rect(center=pos).topleft
+            if size is not None:
+                img = pygame.transform.smoothscale(img, size)
 
-        if transparency is not None:
-            image_.set_alpha(transparency)
+            if angle is not None:
+                if radians:
+                    angle = math.degrees(angle)
+                img = pygame.transform.rotate(img, angle)
+                pos = img.get_rect(center=pos).topleft
+
+            if transparency is not None:
+                img.set_alpha(transparency)
+
+            self._image_cache[cache_key] = img
 
         if center is not None:
-            pos = image_.get_rect(center=pygame.Rect(center).center).topleft
+            pos = img.get_rect(center=pygame.Rect(center).center).topleft
 
         if use_cam and self._cam is not None:
             pos = (pos[0] + self._cam.x, pos[1] + self._cam.y)
 
-        return self._target_surf.blit(image_, pos)
+        return self._target_surf.blit(img, pos)
 
     def write(self, text: str, pos: Tuple[int, int], size: int = 30, colour: Union[pygame.Color, str] = "white",
               transparency: Union[None, int] = None, font: str = "arial", center: Union[None, pygame.Rect] = None,
@@ -103,3 +112,6 @@ class Graphics:
             pos = (pos[0] + self._cam.x, pos[1] + self._cam.y)
 
         return self._target_surf.blit(text_, pos)
+
+    def get_image(self, name: str) -> pygame.Surface:
+        return self._original_images[name]
