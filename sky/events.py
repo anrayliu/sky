@@ -8,6 +8,7 @@ class Events:
         self._quit = False
         self._click = False
         self._input = (None, "", None)
+        self._resized = False
 
         self._keys_down = None
         self._mouse_down = None
@@ -33,6 +34,10 @@ class Events:
         return self._click
 
     @property
+    def resized(self) -> bool:
+        return self._resized
+
+    @property
     def input(self) -> Tuple[any, str, any]:
         return self._input
 
@@ -55,6 +60,7 @@ class Events:
         self._quit = False
         self._click = False
         self._input = (None, "", None)
+        self._resized = False
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -63,6 +69,8 @@ class Events:
                 self._click = True
             elif event.type == pygame.KEYDOWN:
                 self._input = (event.unicode, pygame.key.name(event.key), event.key)
+            elif event.type == pygame.WINDOWRESIZED:
+                self._resized = True
 
             # for handling custom events
             if event.type in self._event_handlers:

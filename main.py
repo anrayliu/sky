@@ -58,6 +58,8 @@ class Main:
 
         while True:
             dt = self.events.update()
+            if self.events.resized:
+                self.scale()
 
             loc = self.locations[self.location]
             loc.update(dt)
