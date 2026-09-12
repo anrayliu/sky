@@ -70,7 +70,7 @@ class Main:
             loc.draw()
 
             if SHOW_FPS := True:
-                self.graphics.write(f"FPS: {self.events.fps}", pos=(0, 0), colour=WHITE, size=15, use_cam=False)
+                self.graphics.write(f"FPS: {self.events.get_fps()}", pos=(0, 0), colour=WHITE, size=15, use_cam=False)
 
             # self.win.blit(pygame.image.frombuffer(pyvidplayer2.PostProcessing.vhs(pygame.surfarray.pixels3d(pygame.display.get_surface()).swapaxes(0, 1)).tobytes(), self.win.get_size(), "RGB"), (0, 0))
 

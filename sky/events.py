@@ -22,8 +22,12 @@ class Events:
         pygame.event.pump()
 
     @property
-    def fps(self) -> int:
-        return round(self._clock.get_fps())
+    def target_fps(self) -> int:
+        return self._target_fps
+
+    @target_fps.setter
+    def target_fps(self, new_target: int) -> None:
+        self._target_fps = new_target
 
     @property
     def quit(self) -> bool:
@@ -52,6 +56,9 @@ class Events:
     @property
     def mouse(self) -> Tuple[int, int]:
         return pygame.mouse.get_pos()
+
+    def get_fps(self) -> int:
+        return round(self._clock.get_fps())
 
     def add_event_handler(self, event: int, handler: Callable[[pygame.Event], any]) -> None:
         self._event_handlers[event] = handler
