@@ -12,3 +12,4 @@ Almost all of my private projects contain a modified version of this package. I'
 - event handler
 - asset manager (images and fonts)
 - image caching for transformations
+- post processing
