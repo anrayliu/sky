@@ -54,3 +54,23 @@ class Camera:
         self._initial_force = initial_force
         self._force_multiplier = force_multiplier
         self._shake_duration = shake_duration
+
+    # debug method
+    #
+    # def draw_borders(self, win: pygame.Surface) -> None:
+    #     if self._restriction is not None:
+    #         rect = self._restriction.copy()
+    #         rect.x += self.x
+    #         rect.y += self.y
+
+    #         pygame.draw.rect(win, (0, 0, 255), rect, 5)
+    #         pygame.draw.line(win, (0, 0, 255), rect.topleft, rect.bottomright, 5)
+    #         pygame.draw.line(win, (0, 0, 255), rect.topright, rect.bottomleft, 5)
+
+    #     rect = self._rect.copy()
+    #     rect.x += self.x
+    #     rect.y += self.y
+
+    #     pygame.draw.rect(win, (0, 0, 0), rect, 5)
+    #     pygame.draw.line(win, (0, 0, 0), rect.topleft, rect.bottomright, 5)
+    #     pygame.draw.line(win, (0, 0, 0), rect.topright, rect.bottomleft, 5)
