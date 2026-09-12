@@ -22,6 +22,8 @@ class Game(sky.Location):
         self.button.rect.y += (self.events.key_down[pygame.K_s] - self.events.key_down[pygame.K_w]) * dt * 10
         self.button.rect.x += (self.events.key_down[pygame.K_d] - self.events.key_down[pygame.K_a]) * dt * 10
 
+        self.draw()
+
     def draw(self) -> None:
         self.win.fill(GREEN)
 

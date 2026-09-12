@@ -4,7 +4,7 @@ import pygame
 
 
 class Events:
-    def __init__(self, target_fps: int) -> None:
+    def __init__(self) -> None:
         self._quit = False
         self._click = False
         self._input = (None, "", None)
@@ -14,20 +14,11 @@ class Events:
         self._mouse_down = None
         self._mouse = (0, 0)
 
-        self._target_fps = target_fps
         self._clock = pygame.time.Clock()
 
         self._event_handlers = {}
 
         pygame.event.pump()
-
-    @property
-    def target_fps(self) -> int:
-        return self._target_fps
-
-    @target_fps.setter
-    def target_fps(self, new_target: int) -> None:
-        self._target_fps = new_target
 
     @property
     def quit(self) -> bool:
@@ -63,7 +54,7 @@ class Events:
     def add_event_handler(self, event: int, handler: Callable[[pygame.Event], any]) -> None:
         self._event_handlers[event] = handler
 
-    def update(self) -> float:
+    def update(self, target_fps: int) -> float:
         self._quit = False
         self._click = False
         self._input = (None, "", None)
@@ -83,4 +74,4 @@ class Events:
             if event.type in self._event_handlers:
                 self._event_handlers[event.type](event)
 
-        return self._clock.tick(self._target_fps) * 60 / 1000
+        return self._clock.tick(target_fps) * 60 / 1000

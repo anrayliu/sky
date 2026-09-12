@@ -26,7 +26,7 @@ class Location:
         pass
 
     def update(self, dt: float) -> None:
-        pass
+        self.draw()
 
     def draw(self) -> None:
         pass

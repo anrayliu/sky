@@ -1,5 +1,4 @@
 import sys
-from typing import Union
 
 import pygame
 import sky
@@ -9,7 +8,7 @@ from game import Game
 
 
 class Main:
-    def __init__(self) -> None:
+    def __init__(self):
         pygame.init()
 
         self.win = pygame.display.set_mode((800, 600))
@@ -22,7 +21,7 @@ class Main:
 
         self.cam = sky.Camera(self.win.get_size())
         self.graphics = sky.Graphics(self.win, cam=self.cam)
-        self.events = sky.Events(60)
+        self.events = sky.Events()
 
         try:
             self.graphics.load_folder("assets", sizes={
@@ -34,20 +33,20 @@ class Main:
         self.locations = {"game": Game(self)}
         self.location = None
 
-        self.scale()
+        self._scale()
 
-    def set_location(self, loc: str, args_: Union[None, dict] = None) -> None:
+    def set_location(self, loc, args_=None):
         if self.location is not None:
             self.locations[self.location].stop()
 
         self.location = loc
         self.locations[self.location].start(args_)
 
-    def scale(self) -> None:
+    def _scale(self):
         for loc in self.locations.values():
             loc.scale()
 
-    def close(self) -> None:
+    def _quit(self):
         if self.location is not None:
             self.locations[self.location].stop()
 
@@ -57,21 +56,23 @@ class Main:
         pygame.quit()
         sys.exit()
 
-    def run(self) -> None:
+    def run(self):
         self.set_location("game")
 
-        while True:
-            dt = self.events.update()
+        running = True
+        while running:
+            dt = self.events.update(60)
+            if self.events.quit:
+                running = False
             if self.events.resized:
-                self.scale()
+                self._scale()
+
+            self.win.fill(BLACK)
 
             loc = self.locations[self.location]
+
+            # each location is responsible for calling draw()
             loc.update(dt)
-
-            if self.events.quit:
-                self.close()
-
-            loc.draw()
 
             if SHOW_FPS := True:
                 self.graphics.write(f"FPS: {self.events.get_fps()}", pos=(0, 0), colour=WHITE, size=15, use_cam=False)
@@ -79,6 +80,8 @@ class Main:
             # self.win.blit(pygame.image.frombuffer(pyvidplayer2.PostProcessing.vhs(pygame.surfarray.pixels3d(pygame.display.get_surface()).swapaxes(0, 1)).tobytes(), self.win.get_size(), "RGB"), (0, 0))
 
             pygame.display.update()
+
+        self._quit()
 
 
 Main().run()
