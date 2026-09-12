@@ -36,12 +36,12 @@ class Main:
 
         self.scale()
 
-    def set_location(self, loc: str, args: Union[None, dict] = None) -> None:
+    def set_location(self, loc: str, args_: Union[None, dict] = None) -> None:
         if self.location is not None:
             self.locations[self.location].stop()
 
         self.location = loc
-        self.locations[self.location].start(args)
+        self.locations[self.location].start(args_)
 
     def scale(self) -> None:
         for loc in self.locations.values():

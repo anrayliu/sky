@@ -10,7 +10,7 @@ class Location:
         self.main = main
 
     # called on location startup
-    def start(self, args: Union[None, dict]) -> None:
+    def start(self, args_: Union[None, dict]) -> None:
         pass
 
     # called on transition to different location
@@ -32,5 +32,5 @@ class Location:
         pass
 
     # wrapper for convenience
-    def set_location(self, loc: str, args: Union[None, dict] = None) -> None:
-        self.main.set_location(loc, args)
+    def set_location(self, loc: str, args_: Union[None, dict] = None) -> None:
+        self.main.set_location(loc, args_)
