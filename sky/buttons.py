@@ -49,6 +49,10 @@ class Button:
     def text(self) -> str:
         return self._text
 
+    @text.setter
+    def text(self, new_text: str) -> None:
+        self._text  = new_text
+
     @property
     def hover(self) -> bool:
         return self._hover
