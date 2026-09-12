@@ -74,4 +74,8 @@ class Events:
             if event.type in self._event_handlers:
                 self._event_handlers[event.type](event)
 
+        # hardcoded 60
+        # develop app and test with 60 fps, but delta time
+        # will adjust for any frame rate
+
         return self._clock.tick(target_fps) * 60 / 1000
