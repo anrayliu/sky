@@ -1,6 +1,6 @@
 # sky
 
-Almost all of my private projects contain a modified version of this package. I'm finally cleaning it up and standardizing it, so I don't have to make 93420934 modifications to it for each project.
+small game framework for Pygame
 
 ## features
 
