@@ -26,13 +26,7 @@ class Camera:
     def y(self) -> int:
         return -self._rect.y + self._shakey
 
-    def update(self, pos: Tuple[int, int], dt: float, speed: int = 20) -> None:
-        self._rect.centerx += (pos[0] - self._rect.centerx) / speed * dt
-        self._rect.centery += (pos[1] - self._rect.centery) / speed * dt
-
-        if self._restriction is not None:
-            self._rect.clamp_ip(self._restriction)
-
+    def _handle_shake(self, dt: float) -> None:
         if 0 < self._initial_force < 0.1:
             self._initial_force = 0
         else:
@@ -43,6 +37,15 @@ class Camera:
             self._shakex = math.sin(self._timerx) * self._initial_force * self._force_multiplier
 
             self._initial_force += (0 - self._initial_force) / self._shake_duration * dt
+
+    def update(self, pos: Tuple[int, int], dt: float, speed: int = 20) -> None:
+        self._rect.centerx += (pos[0] - self._rect.centerx) / speed * dt
+        self._rect.centery += (pos[1] - self._rect.centery) / speed * dt
+
+        if self._restriction is not None:
+            self._rect.clamp_ip(self._restriction)
+
+        self._handle_shake(dt)
 
     def shake(self, initial_force: int = 10, force_multiplier: int = 5, shake_duration: int = 10) -> None:
         self._timerx = random.uniform(0, 6.28)
