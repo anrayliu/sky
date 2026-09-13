@@ -75,7 +75,11 @@ class Graphics:
             self._image_cache[cache_key] = img
 
         if center is not None:
-            pos = img.get_rect(center=pygame.Rect(center).center).topleft
+            rect = img.get_rect(center=pygame.Rect(center).center)
+            # pos will act as offsets
+            rect.x += pos[0]
+            rect.y += pos[1]
+            pos = rect.topleft
 
         if use_cam and self._cam is not None:
             pos = (pos[0] + self._cam.x, pos[1] + self._cam.y)
@@ -106,7 +110,11 @@ class Graphics:
             text_.set_alpha(transparency)
 
         if center is not None:
-            pos = text_.get_rect(center=pygame.Rect(center).center).topleft
+            rect = text_.get_rect(center=pygame.Rect(center).center)
+            # pos will act as offsets
+            rect.x += pos[0]
+            rect.y += pos[1]
+            pos = rect.topleft
 
         if use_cam and self._cam is not None:
             pos = (pos[0] + self._cam.x, pos[1] + self._cam.y)
