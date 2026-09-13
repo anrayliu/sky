@@ -99,6 +99,7 @@ class Camera:
         # we love python :)
         for rect, colour in zip(([self._restriction.copy()] if self._restriction is not None else []) + [self._rect.copy()], 
                                 [(0, 0, 0 if self._restriction is None else 255), (0, 0, 0)]):
+            # render debug lines in game space
             rect.x += self.x
             rect.y += self.y
 

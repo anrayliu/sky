@@ -51,7 +51,7 @@ class Graphics:
 
     def draw(self, name: str, pos: Union[int, int], angle: Union[None, int, float] = None,
              size: Union[None, Tuple[int, int]] = None, transparency: Union[None, int] = None, radians: bool = False,
-             center: Union[None, pygame.Rect] = None, use_cam: bool = True) -> pygame.Rect:
+             center: Union[None, pygame.Rect] = None, use_cam: bool = True, update_cache: bool = True) -> pygame.Rect:
         
         cache_key = name + str(size) + str(angle) + str(transparency)
 
@@ -72,7 +72,8 @@ class Graphics:
             if transparency is not None:
                 img.set_alpha(transparency)
 
-            self._image_cache[cache_key] = img
+            if update_cache:
+                self._image_cache[cache_key] = img
 
         if center is not None:
             rect = img.get_rect(center=pygame.Rect(center).center)
@@ -88,26 +89,36 @@ class Graphics:
 
     def write(self, text: str, pos: Tuple[int, int], size: int = 30, colour: Union[pygame.Color, str] = "white",
               transparency: Union[None, int] = None, font: str = "arial", center: Union[None, pygame.Rect] = None,
-              use_cam: bool = True) -> pygame.Rect:
-        try:
-            font_ = self._font_objs[font + str(size)]
-        except KeyError:
-            if font in pygame.font.get_fonts():
-                font_ = pygame.font.SysFont(font, size)
-            else:
-                for path in self._font_paths:
-                    if os.path.splitext(os.path.basename(path))[0] == font:
-                        font_ = pygame.font.Font(path, size)
-                        break
+              use_cam: bool = True, update_cache: bool = True) -> pygame.Rect:
+        text = str(text)
+
+        cache_key = text + str(size) + str(colour) + str(transparency) + font
+
+        if cache_key in self._image_cache:
+            text_ = self._image_cache[cache_key]
+        else:
+            try:
+                font_ = self._font_objs[font + str(size)]
+            except KeyError:
+                if font in pygame.font.get_fonts():
+                    font_ = pygame.font.SysFont(font, size)
                 else:
-                    raise RuntimeError("no font file found")
+                    for path in self._font_paths:
+                        if os.path.splitext(os.path.basename(path))[0] == font:
+                            font_ = pygame.font.Font(path, size)
+                            break
+                    else:
+                        raise RuntimeError("no font file found")
 
-            self._font_objs[font + str(size)] = font_
+                self._font_objs[font + str(size)] = font_
 
-        text_ = font_.render(str(text), True, colour)
+            text_ = font_.render(text, True, colour)
 
-        if transparency is not None:
-            text_.set_alpha(transparency)
+            if transparency is not None:
+                text_.set_alpha(transparency)
+
+            if update_cache:
+                self._image_cache[cache_key] = text_
 
         if center is not None:
             rect = text_.get_rect(center=pygame.Rect(center).center)
