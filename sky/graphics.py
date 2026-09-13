@@ -76,7 +76,7 @@ class Graphics:
 
         return img
 
-    def draw(self, name: str, pos: Union[int, int], angle: Union[None, int, float] = None,
+    def draw(self, name: str, pos: Tuple[int, int], angle: Union[None, int, float] = None,
              size: Union[None, Tuple[int, int]] = None, transparency: Union[None, int] = None, radians: bool = False,
              center: Union[None, pygame.Rect] = None, use_cam: bool = True, update_cache: bool = True) -> pygame.Rect:
         
