@@ -4,8 +4,8 @@ from sky.colours import *
 
 
 class Game(sky.Location):
-    def __init__(self, main) -> None:
-        super().__init__(main)
+    def __init__(self, sky_obj) -> None:
+        super().__init__(sky_obj)
 
         self.button = sky.Button((200, 0, 200, 100), "hi", cam=self.cam)
 

@@ -1,8 +1,5 @@
-import sys
-
 import pygame
 import sky
-from sky.colours import *
 
 from game import Game
 
@@ -19,74 +16,21 @@ class Main:
         except FileNotFoundError:
             pass
 
-        self.cam = sky.Camera(self.win.get_size())
-        self.graphics = sky.Graphics(self.win, cam=self.cam)
-        self.events = sky.Events()
-
-        try:
-            self.graphics.load_folder("assets", sizes={
-                "apple": (200, 100)
-            })
-        except FileNotFoundError:
-            pass
-
-        self.locations = {"game": Game(self)}
-        self.location = None
-
-        self._scale()
-
-    def set_location(self, loc, args_=None):
-        if self.location is not None:
-            self.locations[self.location].stop()
-
-        self.location = loc
-        self.locations[self.location].start(args_)
-
-    def _scale(self):
-        for loc in self.locations.values():
-            loc.scale()
-
-    def _quit(self):
-        if self.location is not None:
-            self.locations[self.location].stop()
-
-        for loc in self.locations.values():
-            loc.cleanup()
-
-        pygame.quit()
-        sys.exit()
+        self.sky = sky.Sky(self.win)
+        self.sky.locations["game"] = Game(self.sky)
+        self.sky.set_location("game")
 
     def run(self):
-        self.set_location("game")
-
         running = True
         while running:
-            dt = self.events.update(60)
-            if self.events.quit:
+            self.sky.update(60, post_processing=sky.PostProcessing.vhs)
+            if self.sky.events.quit:
                 running = False
-            if self.events.resized:
-                self._scale()
-
-            self.win.fill(BLACK)
-
-            loc = self.locations[self.location]
-
-            # each location is responsible for calling draw()
-            loc.update(dt)
-
-            self.win.blit(pygame.image.frombuffer(sky.PostProcessing.vhs(pygame.surfarray.pixels3d(pygame.display.get_surface()).swapaxes(0, 1)).tobytes(), self.win.get_size(), "RGB"), (0, 0))
-
-            # TODO: add proper config to these
-
-            if DEBUG := True:
-                self.cam.show_borders(self.win)
-
-            if SHOW_FPS := True:
-                self.graphics.write(f"FPS: {self.events.get_fps()}", pos=(0, 0), colour=WHITE, size=15, use_cam=False)
 
             pygame.display.update()
 
-        self._quit()
+        self.sky.quit()
+        pygame.quit()
 
 
 Main().run()

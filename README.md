@@ -13,3 +13,4 @@ small game framework for Pygame
 - asset manager (images and fonts)
 - image caching for transformations
 - post processing
+- keep full control over game loop
