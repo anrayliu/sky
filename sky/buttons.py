@@ -11,6 +11,8 @@ DEFAULT_STYLE = {"colour": "black",
                  "border colour": "white",
                  "border size": 0,
                  "rounding": 0,
+                 "offset x": 0,
+                 "offset y": 0,
                  "font": "arial",
                  "font size": 30,
                  "font colour": "white"}
@@ -92,5 +94,5 @@ class Button:
             pygame.draw.rect(graphics.surf, self._style["border colour"], rect, self._style["border size"])
 
         # don't apply cam offset because rect already has it applied
-        graphics.write(self._text, (0, 0), font=self._style["font"], size=self._style["font size"],
+        graphics.write(self._text, (self._style["offset x"], self._style["offset y"]), font=self._style["font"], size=self._style["font size"],
                        colour=self._style["font colour"], center=rect, use_cam=False)
