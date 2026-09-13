@@ -8,6 +8,7 @@ import pygame
 class Camera:
     def __init__(self, size: Tuple[int, int], restriction: Union[None, pygame.Rect] = None) -> None:
         self._rect = pygame.Rect((0, 0, *size))
+        self._x, self._y = (0, 0)
 
         self._timerx, self._timery = (0, 0)
         self._shakex, self._shakey = (0, 0)
@@ -48,9 +49,12 @@ class Camera:
 
             self._initial_force += (0 - self._initial_force) / self._shake_duration * dt
 
-    def update(self, pos: Tuple[int, int], dt: float, speed: int = 20) -> None:
-        self._rect.centerx += (pos[0] - self._rect.centerx) / speed * dt
-        self._rect.centery += (pos[1] - self._rect.centery) / speed * dt
+    def update(self, pos: Tuple[int, int], dt: float, speed: int = 15) -> None:
+        self._x += (pos[0] - self._x) / speed * dt
+        self._y += (pos[1] - self._y) / speed * dt
+
+        self._rect.centerx = self._x
+        self._rect.centery = self._y
 
         if self._restriction is not None:
             self._rect.clamp_ip(self._restriction)
