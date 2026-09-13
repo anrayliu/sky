@@ -14,9 +14,19 @@ class Camera:
 
         self._initial_force = 0
         self._force_multiplier = 0
+
+        # prevents division by 0
         self._shake_duration = 1
 
         self._restriction = restriction
+
+    @property
+    def rect(self) -> pygame.Rect:
+        return self._rect
+
+    @property
+    def restriction(self) -> pygame.Rect:
+        return self._restriction
 
     @property
     def x(self) -> int:
@@ -55,22 +65,36 @@ class Camera:
         self._force_multiplier = force_multiplier
         self._shake_duration = shake_duration
 
+    def reset(self, size: Union[None, Tuple[int, int]] = None, restriction: Union[None, pygame.Rect] = None, 
+              stop_shake: bool = False):
+        if size is not None:
+            self._rect.w = size[0]
+            self._rect.h = size[1]
+
+        if restriction is not None:
+            self._restriction = restriction
+
+        if stop_shake:
+            self._initial_force = 0
+            self._force_multiplier = 0
+
+            # prevents division by 0
+            self._shake_duration = 1
+
+            self._shakex = 0
+            self._shakey = 0
+
+        if self._restriction is not None:
+            self._rect.clamp_ip(self._restriction)
+
     # debug method
-    #
-    # def draw_borders(self, win: pygame.Surface) -> None:
-    #     if self._restriction is not None:
-    #         rect = self._restriction.copy()
-    #         rect.x += self.x
-    #         rect.y += self.y
+    def show_borders(self, win: pygame.Surface) -> None:
+        # we love python :)
+        for rect, colour in zip(([self._restriction.copy()] if self._restriction is not None else []) + [self._rect.copy()], 
+                                [(0, 0, 0 if self._restriction is None else 255), (0, 0, 0)]):
+            rect.x += self.x
+            rect.y += self.y
 
-    #         pygame.draw.rect(win, (0, 0, 255), rect, 5)
-    #         pygame.draw.line(win, (0, 0, 255), rect.topleft, rect.bottomright, 5)
-    #         pygame.draw.line(win, (0, 0, 255), rect.topright, rect.bottomleft, 5)
-
-    #     rect = self._rect.copy()
-    #     rect.x += self.x
-    #     rect.y += self.y
-
-    #     pygame.draw.rect(win, (0, 0, 0), rect, 5)
-    #     pygame.draw.line(win, (0, 0, 0), rect.topleft, rect.bottomright, 5)
-    #     pygame.draw.line(win, (0, 0, 0), rect.topright, rect.bottomleft, 5)
+            pygame.draw.rect(win, colour, rect, 5)
+            pygame.draw.line(win, colour, rect.topleft, rect.bottomright, 5)
+            pygame.draw.line(win, colour, rect.topright, rect.bottomleft, 5)
