@@ -13,6 +13,7 @@ DEFAULT_STYLE = {"colour": "black",
                  "rounding": 0,
                  "offset x": 0,
                  "offset y": 0,
+                 "text only": False,
                  "font": "arial",
                  "font size": 30,
                  "font colour": "white"}
@@ -87,11 +88,12 @@ class Button:
     def draw(self, graphics: Graphics) -> None:
         rect = self._get_rect()
 
-        pygame.draw.rect(graphics.surf, self._style["highlight"] if self._hover else self._style["colour"], rect, 0,
-                         self._style["rounding"], self._style["rounding"], self._style["rounding"],
-                         self._style["rounding"])
-        if self._style["border size"] > 0:
-            pygame.draw.rect(graphics.surf, self._style["border colour"], rect, self._style["border size"])
+        if not self._style["text only"]:
+            pygame.draw.rect(graphics.surf, self._style["highlight"] if self._hover else self._style["colour"], rect, 0,
+                            self._style["rounding"], self._style["rounding"], self._style["rounding"],
+                            self._style["rounding"])
+            if self._style["border size"] > 0:
+                pygame.draw.rect(graphics.surf, self._style["border colour"], rect, self._style["border size"])
 
         # don't apply cam offset because rect already has it applied
         graphics.write(self._text, (self._style["offset x"], self._style["offset y"]), font=self._style["font"], size=self._style["font size"],
