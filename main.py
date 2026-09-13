@@ -19,12 +19,12 @@ class Main:
         except FileNotFoundError:
             pass
 
-        self.cam = sky.Camera(self.win.get_size())
-        self.graphics = sky.Graphics(self.win, cam=self.cam)
-        self.events = sky.Events()
+        self._cam = sky.Camera(self.win.get_size())
+        self._graphics = sky.Graphics(self.win, cam=self._cam)
+        self._events = sky.Events()
 
         try:
-            self.graphics.load_folder("assets", sizes={
+            self._graphics.load_folder("assets", sizes={
                 "apple": (200, 100)
             })
         except FileNotFoundError:
@@ -34,6 +34,20 @@ class Main:
         self.location = None
 
         self._scale()
+
+    # for static code analysis
+
+    @property
+    def cam(self) -> sky.Camera:
+        return self._cam
+
+    @property
+    def graphics(self) -> sky.Graphics:
+        return self._graphics
+
+    @property
+    def events(self) -> sky.Events:
+        return self._events
 
     def set_location(self, loc, args_=None):
         if self.location is not None:
@@ -61,10 +75,10 @@ class Main:
 
         running = True
         while running:
-            dt = self.events.update(60)
-            if self.events.quit:
+            dt = self._events.update(60)
+            if self._events.quit:
                 running = False
-            if self.events.resized:
+            if self._events.resized:
                 self._scale()
 
             self.win.fill(BLACK)
@@ -79,10 +93,10 @@ class Main:
             # TODO: add proper config to these
 
             if DEBUG := True:
-                self.cam.show_borders(self.win)
+                self._cam.show_borders(self.win)
 
             if SHOW_FPS := True:
-                self.graphics.write(f"FPS: {self.events.get_fps()}", pos=(0, 0), colour=WHITE, size=15, use_cam=False)
+                self._graphics.write(f"FPS: {self._events.get_fps()}", pos=(0, 0), colour=WHITE, size=15, use_cam=False)
 
             pygame.display.update()
 
