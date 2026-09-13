@@ -100,7 +100,7 @@ class Graphics:
 
             self._font_objs[font + str(size)] = font_
 
-        text_ = font_.render(text, True, colour)
+        text_ = font_.render(str(text), True, colour)
 
         if transparency is not None:
             text_.set_alpha(transparency)
