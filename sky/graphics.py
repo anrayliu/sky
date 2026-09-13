@@ -134,3 +134,6 @@ class Graphics:
 
     def get_image(self, name: str) -> pygame.Surface:
         return self._original_images[name]
+
+    def clear_cache(self) -> None:
+        self._image_cache.clear()
