@@ -48,13 +48,13 @@ class Graphics:
                 loaded += 1
 
         return loaded
-
-    def draw(self, name: str, pos: Union[int, int], angle: Union[None, int, float] = None,
+    
+    def render_image(self, name: str, angle: Union[None, int, float] = None,
              size: Union[None, Tuple[int, int]] = None, transparency: Union[None, int] = None, radians: bool = False,
-             center: Union[None, pygame.Rect] = None, use_cam: bool = True, update_cache: bool = True) -> pygame.Rect:
+             update_cache: bool = True) -> pygame.Surface:
         
         cache_key = name + str(size) + str(angle) + str(transparency)
-
+        
         if cache_key in self._image_cache:
             img = self._image_cache[cache_key]
         else:
@@ -67,13 +67,20 @@ class Graphics:
                 if radians:
                     angle = math.degrees(angle)
                 img = pygame.transform.rotate(img, angle)
-                pos = img.get_rect(center=pos).topleft
 
             if transparency is not None:
                 img.set_alpha(transparency)
 
             if update_cache:
                 self._image_cache[cache_key] = img
+
+        return img
+
+    def draw(self, name: str, pos: Union[int, int], angle: Union[None, int, float] = None,
+             size: Union[None, Tuple[int, int]] = None, transparency: Union[None, int] = None, radians: bool = False,
+             center: Union[None, pygame.Rect] = None, use_cam: bool = True, update_cache: bool = True) -> pygame.Rect:
+        
+        img = self.render_image(name, angle=angle, size=size, transparency=transparency, radians=radians, update_cache=update_cache)
 
         if center is not None:
             rect = img.get_rect(center=pygame.Rect(center).center)
@@ -82,20 +89,25 @@ class Graphics:
             rect.y += pos[1]
             pos = rect.topleft
 
+            if angle is not None:
+                pos = img.get_rect(center=rect.center).topleft
+
+        elif angle is not None:
+            pos = img.get_rect(center=pos).topleft
+
         if use_cam and self._cam is not None:
             pos = (pos[0] + self._cam.x, pos[1] + self._cam.y)
 
         return self._target_surf.blit(img, pos)
 
-    def write(self, text: str, pos: Tuple[int, int], size: int = 30, colour: Union[pygame.Color, str] = "white",
-              transparency: Union[None, int] = None, font: str = "arial", center: Union[None, pygame.Rect] = None,
-              use_cam: bool = True, update_cache: bool = True) -> pygame.Rect:
+    def render_text(self, text: str, size: int = 30, colour: Union[pygame.Color, str] = "white",
+              transparency: Union[None, int] = None, font: str = "arial", update_cache: bool = True) -> pygame.Surface:
         text = str(text)
 
         cache_key = text + str(size) + str(colour) + str(transparency) + font
 
         if cache_key in self._image_cache:
-            text_ = self._image_cache[cache_key]
+            text_surf = self._image_cache[cache_key]
         else:
             try:
                 font_ = self._font_objs[font + str(size)]
@@ -112,16 +124,25 @@ class Graphics:
 
                 self._font_objs[font + str(size)] = font_
 
-            text_ = font_.render(text, True, colour)
+            text_surf = font_.render(text, True, colour)
 
             if transparency is not None:
-                text_.set_alpha(transparency)
+                text_surf.set_alpha(transparency)
 
             if update_cache:
-                self._image_cache[cache_key] = text_
+                self._image_cache[cache_key] = text_surf
+
+        return text_surf
+
+    def write(self, text: str, pos: Tuple[int, int], size: int = 30, colour: Union[pygame.Color, str] = "white",
+              transparency: Union[None, int] = None, font: str = "arial", center: Union[None, pygame.Rect] = None,
+              use_cam: bool = True, update_cache: bool = True) -> pygame.Rect:
+        text = str(text)
+
+        text_surf = self.render_text(text, size=size, colour=colour, transparency=transparency, font=font, update_cache=update_cache)
 
         if center is not None:
-            rect = text_.get_rect(center=pygame.Rect(center).center)
+            rect = text_surf.get_rect(center=pygame.Rect(center).center)
             # pos will act as offsets
             rect.x += pos[0]
             rect.y += pos[1]
@@ -130,7 +151,7 @@ class Graphics:
         if use_cam and self._cam is not None:
             pos = (pos[0] + self._cam.x, pos[1] + self._cam.y)
 
-        return self._target_surf.blit(text_, pos)
+        return self._target_surf.blit(text_surf, pos)
 
     def get_image(self, name: str) -> pygame.Surface:
         return self._original_images[name]
