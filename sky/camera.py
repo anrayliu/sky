@@ -14,7 +14,8 @@ class Camera:
         self._shakex, self._shakey = (0, 0)
 
         self._initial_force = 0
-        self._force_multiplier = 0
+        self._x_mult = 0
+        self._y_mult = 0
 
         # prevents division by 0
         self._shake_duration = 1
@@ -44,8 +45,8 @@ class Camera:
             self._timerx += dt
             self._timery += dt
 
-            self._shakey = math.sin(self._timery) * self._initial_force * self._force_multiplier
-            self._shakex = math.sin(self._timerx) * self._initial_force * self._force_multiplier
+            self._shakey = math.sin(self._timery) * self._initial_force * self._y_mult
+            self._shakex = math.sin(self._timerx) * self._initial_force * self._x_mult
 
             self._initial_force += (0 - self._initial_force) / self._shake_duration * dt
 
@@ -61,12 +62,13 @@ class Camera:
 
         self._handle_shake(dt)
 
-    def shake(self, initial_force: int = 10, force_multiplier: int = 5, shake_duration: int = 10) -> None:
+    def shake(self, initial_force: int = 10, x_multiplier: int = 5, y_multiplier: int = 5, shake_duration: int = 10) -> None:
         self._timerx = random.uniform(0, 6.28)
         self._timery = random.uniform(0, 6.28)
 
         self._initial_force = initial_force
-        self._force_multiplier = force_multiplier
+        self._x_mult = x_multiplier
+        self._y_mult = y_multiplier
         self._shake_duration = shake_duration
 
     def reset(self, size: Union[None, Tuple[int, int]] = None, restriction: Union[None, pygame.Rect] = None, 
@@ -80,7 +82,8 @@ class Camera:
 
         if stop_shake:
             self._initial_force = 0
-            self._force_multiplier = 0
+            self._x_mult = 0
+            self._y_mult = 0
 
             # prevents division by 0
             self._shake_duration = 1
