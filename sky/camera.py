@@ -97,6 +97,9 @@ class Camera:
         if self._restriction is not None:
             self._rect.clamp_ip(self._restriction)
 
+    def apply(self, x: int, y: int) -> Tuple[int, int]:
+        return (x + self.x, y + self.y)
+
     # debug method
     def show_borders(self, win: pygame.Surface) -> None:
         # we love python :)

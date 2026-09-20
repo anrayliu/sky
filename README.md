@@ -98,6 +98,7 @@ Responsible for converting global space coordinates to game space coordinates. G
 - `update(pos: (int, int), dt: float, speed: int = 15)` - Moves camera to focus onto `pos` (global space coordinates). Speed can be adjusted with `steps` (lower is faster). Pass a delta time (see `sky.Events`) to maintain consistent camera speed across various frame rates.
 - `shake(initial_force: int = 10, x_multiplier: int = 5, y_multiplier: int = 5, steps: int = 10)` - Adds sinusoidal screen shake. Baseline intensity depends on `initial_force` while additional control on each axis can be controlled with `x_multiplier` and `y_multiplier`. Shake duration can be adjusted with `steps` (lower is shorter).
 - `reset(size: (int, int) = None, restriction: pygame.Rect = None, stop_shake: bool = False, pos: (int, int) = None)` - Resets camera properties if provided.
+- `apply(x: int, y: int) -> (int, int)` - Converts a global space coordinate to a game space coordinate.
 
 # *class* Events
 
