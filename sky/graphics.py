@@ -51,7 +51,7 @@ class Graphics:
     
     def render_image(self, name: str, angle: Union[None, int, float] = None,
              size: Union[None, Tuple[int, int]] = None, transparency: Union[None, int] = None, radians: bool = False,
-             update_cache: bool = True) -> pygame.Surface:
+             update_cache: bool = False) -> pygame.Surface:
         
         cache_key = name + str(size) + str(angle) + str(transparency)
         
@@ -78,7 +78,7 @@ class Graphics:
 
     def draw(self, name: str, pos: Tuple[int, int], angle: Union[None, int, float] = None,
              size: Union[None, Tuple[int, int]] = None, transparency: Union[None, int] = None, radians: bool = False,
-             center: Union[None, pygame.Rect] = None, use_cam: bool = True, update_cache: bool = True) -> pygame.Rect:
+             center: Union[None, pygame.Rect] = None, use_cam: bool = True, update_cache: bool = False) -> pygame.Rect:
         
         img = self.render_image(name, angle=angle, size=size, transparency=transparency, radians=radians, update_cache=update_cache)
 
@@ -101,7 +101,7 @@ class Graphics:
         return self._target_surf.blit(img, pos)
 
     def render_text(self, text: str, size: int = 30, colour: Union[pygame.Color, str] = "white",
-              transparency: Union[None, int] = None, font: str = "arial", update_cache: bool = True) -> pygame.Surface:
+              transparency: Union[None, int] = None, font: str = "arial", update_cache: bool = False) -> pygame.Surface:
         text = str(text)
 
         cache_key = text + str(size) + str(colour) + str(transparency) + font
@@ -136,7 +136,7 @@ class Graphics:
 
     def write(self, text: str, pos: Tuple[int, int], size: int = 30, colour: Union[pygame.Color, str] = "white",
               transparency: Union[None, int] = None, font: str = "arial", center: Union[None, pygame.Rect] = None,
-              use_cam: bool = True, update_cache: bool = True) -> pygame.Rect:
+              use_cam: bool = True, update_cache: bool = False) -> pygame.Rect:
         text = str(text)
 
         text_surf = self.render_text(text, size=size, colour=colour, transparency=transparency, font=font, update_cache=update_cache)
