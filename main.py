@@ -4,38 +4,61 @@ from sky.colours import *
 
 
 class Game(sky.Location):
-    def __init__(self, sky_obj) -> None:
+    def __init__(self, sky_obj):
         super().__init__(sky_obj)
 
-        self.button = sky.Button((200, 0, 200, 100), "text here", cam=self.cam)
+        self.button1 = sky.Button((200, 0, 200, 100), "WASD to move", cam=self._cam)
+
+        self.button2 = sky.Button((300, 300, 150, 80), "hello", cam=self._cam,
+                                  style={
+                                      "font": "cool-font",
+                                      "rounding": 10,
+                                  })
+
+    def start(self, passed_data):
+        print("starting location...")
+
+    def stop(self):
+        print("stopping location...")
 
     def scale(self, new_size):
-        self.cam.reset(size=new_size)
+        self._cam.reset(size=new_size)
 
-    def update(self, dt: float) -> None:
-        self.cam.update(self.button.rect.center, dt)
+    def cleanup(self):
+        self.graphics.clear_cache()
 
-        self.button.update(self.events)
-        if self.button.click:
-            print("hi!")
+    def update(self, dt):
+        self._cam.update(self.button1.rect.center, dt)
 
-        if self.events.input[1] == "space":
-            self.cam.shake(10)
+        self.button1.update(self._events)
+        if self.button1.click:
+            print("button clicked!")
 
-        self.button.rect.y += (self.events.key_down[pygame.K_s] - self.events.key_down[pygame.K_w]) * dt * 10
-        self.button.rect.x += (self.events.key_down[pygame.K_d] - self.events.key_down[pygame.K_a]) * dt * 10
+        self.button2.update(self._events)
+        if self.button2.click:
+            print("world!")
+
+        if self._events.input[1] == "space":
+            self._cam.shake(8)
+
+        self.button1.rect.y += (self._events.key_down[pygame.K_s] - self._events.key_down[pygame.K_w]) * dt * 10
+        self.button1.rect.x += (self._events.key_down[pygame.K_d] - self._events.key_down[pygame.K_a]) * dt * 10
 
         self.draw()
 
-    def draw(self) -> None:
-        self.win.fill(GREEN)
+    def draw(self):
+        self._win.fill(GREEN)
+
+        pygame.draw.line(self._win, BLACK, self._cam.apply(-20, 0), self._cam.apply(20, 0), 5)
+        pygame.draw.line(self._win, BLACK, self._cam.apply(0, -20), self._cam.apply(0, 20), 5)
 
         self.graphics.draw("apple", (0, 200))
 
-        self.graphics.write("WASD to move", (0, 50), font="cool-font", colour=ORANGE, size=25)
+        self.graphics.write("(0, 0)", (12, 12), font="cool-font", colour=BLACK, size=30)
         self.graphics.write("press space for screen shake", (150, 150), font="cool-font", colour=BLUE, size=50)
 
-        self.button.draw(self.graphics)
+        self.button2.draw(self.graphics)
+        self.button1.draw(self.graphics)
 
 
 class Main:
@@ -51,7 +74,7 @@ class Main:
             pass
 
         self.sky = sky.Sky(self.win)
-        self.sky.locations["game"] = Game(self.sky)
+        self.sky.add_location("game", Game(self.sky))
         self.sky.set_location("game")
 
     def run(self):
