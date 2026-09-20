@@ -47,7 +47,18 @@ If several buttons are overlapping, the first one to be processed will be the on
 
 - `rect: pygame.Rect | (int, int, int, int)` - Rect representing button in global space. If a tuple is provided instead, a `pygame.Rect` will be automatically created.
 - `text: str` - Text to display on button.
-- `style: dict` - Dictionary containing button style properties.
+- `style: dict` - Dictionary containing button style properties. If not provided, a default style will be used.
+    - `colour` - Default button colour. Default is `"black"`.
+    - `highlight` - Button colour when being hovered over. Default is `"yellow"`.
+    - `border colour` - Colour of button edges. Default is `"white"`.
+    - `border size` - Thickness of button edges. Default is `0`.
+    - `rounding` - Button corner rounding. Default is `0`.
+    - `offset x` - Horizontal text offset in button. Default is `0`.
+    - `offset y` - Vertical text offset in button. Default is `0`.
+    - `text only` - Whether to draw only the text and not the button rect. Default is `False`.
+    - `font` - Text font. Default is `"arial"`.
+    - `font size` - Text size. Default is `30`.
+    - `font colour` - Text colour. Default is `"white"`.
 - `center: pygame.Rect` - If a rect is provided here, the button will be centered inside. The positional values provided in `rect`  will then be treated as offsets, applied after centering.
 - `cam: sky.Camera` - If provided, button will be rendered in game space instead of global space.
 
