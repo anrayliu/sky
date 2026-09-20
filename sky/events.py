@@ -18,6 +18,10 @@ class Events:
 
         self._event_handlers = {}
 
+        # ensures overlapping buttons don't both trigger
+        self._button_hovered = False
+        self._button_clicked = False
+
         pygame.event.pump()
 
     @property
@@ -48,6 +52,24 @@ class Events:
     def mouse(self) -> Tuple[int, int]:
         return pygame.mouse.get_pos()
 
+    # for internal use
+
+    @property
+    def button_clicked(self) -> bool:
+        return self._button_clicked
+
+    @button_clicked.setter
+    def button_clicked(self, val: bool) -> None:
+        self._button_clicked = val
+
+    @property
+    def button_hovered(self) -> bool:
+        return self._button_hovered
+
+    @button_hovered.setter
+    def button_hovered(self, val: bool) -> None:
+        self._button_hovered = val
+
     def get_fps(self) -> int:
         return round(self._clock.get_fps())
 
@@ -59,6 +81,9 @@ class Events:
         self._click = False
         self._input = (None, "", None)
         self._resized = False
+
+        self._button_clicked = False
+        self.button_hovered = False
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

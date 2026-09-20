@@ -80,10 +80,12 @@ class Button:
         self._click = False
         self._hover = False
 
-        if rect.collidepoint(events.mouse):
+        if not events.button_hovered and rect.collidepoint(events.mouse):
             self._hover = True
-            if events.click:
+            events.button_hovered = True
+            if not events.button_clicked and events.click:
                 self._click = True
+                events.button_clicked = True
 
     def draw(self, graphics: Graphics) -> None:
         rect = self._get_rect()

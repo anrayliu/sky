@@ -43,6 +43,8 @@ Still a WIP, and some parts may not be fully clear, but in this AI-era, it shoul
 
 # *class* Button(rect: pygame.Rect | (int, int, int, int), text: str, style: dict = None, center: pygame.Rect = None, cam: sky.Camera = None)
 
+If several buttons are overlapping, the first one to be processed will be the only one updating `click` and `hover` properties.
+
 - `rect: pygame.Rect | (int, int, int, int)` - Rect representing button in global space. If a tuple is provided instead, a `pygame.Rect` will be automatically created.
 - `text: str` - Text to display on button.
 - `style: dict` - Dictionary containing button style properties.
@@ -80,7 +82,7 @@ Still a WIP, and some parts may not be fully clear, but in this AI-era, it shoul
 - `shake(initial_force: int = 10, x_multiplier: int = 5, y_multiplier: int = 5, steps: int = 10)` - Adds sinusoidal screen shake. Baseline intensity depends on `initial_force` while additional control on each axis can be controlled with `x_multiplier` and `y_multiplier`. Shake duration can be adjusted with `steps` (lower is shorter).
 - `reset(size: (int, int) = None, restriction: pygame.Rect = None, stop_shake: bool = False, pos: (int, int) = None)` - Resets camera properties if provided.
 
-# *class* Events()
+# *class* Events
 
 ## Properties
 
