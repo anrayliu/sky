@@ -39,7 +39,7 @@ repeatedly writing, but it doesn't hide the lower-level control that Pygame prov
 
 # Documentation
 
-Still a WIP, and some parts may not be fully clear, but in this AI-era, it shouldn't be too hard to probe an agent about it.
+Some parts may not be fully clear, but in this AI-era, it shouldn't be too hard to probe an agent about it.
 
 # *class* Button(rect: pygame.Rect | (int, int, int, int), text: str, style: dict = None, center: pygame.Rect = None, cam: sky.Camera = None)
 
