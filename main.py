@@ -54,7 +54,7 @@ class Main:
     def run(self):
         running = True
         while running:
-            self.sky.update(60, post_processing=sky.PostProcessing.none)
+            self.sky.update(60, show_fps=True, post_processing=sky.PostProcessing.none)
             if self.sky.events.quit:
                 running = False
 

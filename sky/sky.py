@@ -73,7 +73,7 @@ class Sky:
         for loc in self._locations.values():
             loc.cleanup()
 
-    def update(self, target_fps: int, show_fps: bool = True, debug: bool = True, post_processing: Callable = None) -> None:
+    def update(self, target_fps: int, show_fps: bool = False, debug: bool = False, post_processing: Callable = None) -> None:
         dt = self._events.update(target_fps)
         if self._events.resized:
             self._scale()
