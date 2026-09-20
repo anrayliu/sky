@@ -9,6 +9,9 @@ class Game(sky.Location):
 
         self.button = sky.Button((200, 0, 200, 100), "text here", cam=self.cam)
 
+    def scale(self, new_size):
+        self.cam.reset(size=new_size)
+
     def update(self, dt: float) -> None:
         self.cam.update(self.button.rect.center, dt)
 
@@ -39,7 +42,7 @@ class Main:
     def __init__(self):
         pygame.init()
 
-        self.win = pygame.display.set_mode((800, 600))
+        self.win = pygame.display.set_mode((800, 600), pygame.RESIZABLE)
         pygame.display.set_caption("sky demo")
 
         try:

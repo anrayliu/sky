@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Tuple, Union
 from .sky import Sky
 
 
@@ -20,7 +20,7 @@ class Location:
         pass
 
     # called on window resize
-    def scale(self) -> None:
+    def scale(self, new_size: Tuple[int, int]) -> None:
         pass
 
     # called on app close

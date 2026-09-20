@@ -125,7 +125,7 @@ Still a WIP, and some parts may not be fully clear, but in this AI-era, it shoul
 
 - `start(args_: {any: any})` - Automatically called when location starts. `args_` contains information passed from the previous location.
 - `stop()` - Automatically called when location stops (e.g. transition to a different location).
-- `scale()` - Automatically called when window is resized.
+- `scale(new_size: (int, int))` - Automatically called when window is resized.
 - `cleanup()` - Automatically called on app shutdown.
 - `update(dt: float)` - Automatically called every frame. Game logic goes here. The delta time is also automatically passed.
 - `draw()` - Conventional for drawing-related code to go in here. This is _not_ automatically called and is the responsibility of `update()`. This method exists mostly for organizational reasons (separating logic and drawing makes it easier to implement features like pausing), as there's nothing inherently special about this.

@@ -57,7 +57,7 @@ class Sky:
 
     def _scale(self):
         for loc in self._locations.values():
-            loc.scale()
+            loc.scale(self.win.get_size())
 
     def set_location(self, loc: str, args_: Dict[any, any] = None) -> None:
         if self._location is not None:
