@@ -70,6 +70,9 @@ class Sky:
         self._location = loc
         self._locations[self._location].start(args_)
 
+    def add_location(self, loc: str, loc_obj: Location) -> None:
+        self._locations[loc] = loc_obj
+
     def quit(self) -> None:
         if self._location is not None:
             self._locations[self._location].stop()

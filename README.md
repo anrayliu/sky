@@ -181,6 +181,7 @@ Aggregate manager for `Graphics`, `Events`, `Camera`, and `Location` objects and
 ## Methods
 
 - `set_location(loc: str, args_: {any: any})` - Used to transition to a new location `loc`. `args_` can be used to pass information to the `start()` call of the new location.
+- `add_location(loc: str, loc_obj: sky.Location)` - Intuitive way off adding a location. Equivalent to `sky.locations[loc] = loc_obj`.
 - `quit()` - Calls `stop()` for current location and `cleanup()` for all locations. 
 - `update(target_fps: int, show_fps: bool = False, debug: bool = False, post_processing: func(np.ndarray) -> ndarray = sky.PostProcessing.none) -> None` - Updates locations. Updates `events`, passing `target_fps`. `show_fps` enables an fps counter in the topleft corner, `debug` toggles some debug visuals, and `post_processing` accepts a NumPy transformation function. The post-processing is applied after all `update()` and `draw()` calls.
 
