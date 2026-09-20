@@ -45,6 +45,8 @@ Still a WIP, and some parts may not be fully clear, but in this AI-era, it shoul
 
 If several buttons are overlapping, the first one to be processed will be the only one updating `click` and `hover` properties.
 
+## Parameters
+
 - `rect: pygame.Rect | (int, int, int, int)` - Rect representing button in global space. If a tuple is provided instead, a `pygame.Rect` will be automatically created.
 - `text: str` - Text to display on button.
 - `style: dict` - Dictionary containing button style properties. If not provided, a default style will be used.
@@ -77,6 +79,10 @@ If several buttons are overlapping, the first one to be processed will be the on
 
 # *class* Camera(size: (int, int), restriction: pygame.Rect = None)
 
+Responsible for converting global space coordinates to game space coordinates. Global space coordinates are absolute positions on the screen, while game space coordinates include the camera offset. The camera offset will change based on which position the camera is tracking and screen shake.
+
+## Parameters
+
 - `size: (int, int)` - Width and height of camera. Usually just the window size.
 - `restriction: pygame.Rect` - If provided, camera will never move outside this rect.
 
@@ -95,6 +101,8 @@ If several buttons are overlapping, the first one to be processed will be the on
 
 # *class* Events
 
+Event and frame rate manager.
+
 ## Properties
 
 - `quit: bool` - `True` if the window 'X' button was clicked.
@@ -112,6 +120,10 @@ If several buttons are overlapping, the first one to be processed will be the on
 - `update(target_fps: int) -> float` - Updates properties and maintains desired frame rate. Returns the delta time between frames, which can be multiplied against hardcoded values to decouple them from frame rate. The delta time assumes a baseline of 60 fps. In other words, during development, hardcoded values designed for 60 fps, when multiplied with the returned delta time, will retain their speed across all frame rates.
 
 # *class* Graphics(surf: pygame.Surface, cam: sky.Camera = None)
+
+Resource manager for images and fonts.
+
+## Parameters
 
 - `surf: pygame.Surface` - Surface to draw to.
 - `cam: sky.Camera` - If a camera object is passed, renders will automatically convert global space coordinates to game space coordinates, by default.
@@ -132,6 +144,10 @@ If several buttons are overlapping, the first one to be processed will be the on
 
 # *class* Location(sky: Sky)
 
+Represents a single game state. Users are meant to create their own game state classes inheriting this.
+
+## Parameters
+
 - `sky: sky.Sky` - Global sky object.
 
 ## Methods
@@ -145,6 +161,10 @@ If several buttons are overlapping, the first one to be processed will be the on
 - `set_location(loc: str, args_: {any: any})` - Alias to `Sky.set_location`.
 
 # *class* Sky(win: pygame.Surface)
+
+Aggregate manager for `Graphics`, `Events`, `Camera`, and `Location` objects and state machine. This object tracks all of the possible locations and automatically updates the active one. Only one location can be active at any given time, but the active location can freely change. Callbacks for all locations, not just the active one, are automatically called if necessary.
+
+## Parameter
 
 - `win: pygame.Surface` - Window surface.
 
@@ -161,4 +181,30 @@ If several buttons are overlapping, the first one to be processed will be the on
 
 - `set_location(loc: str, args_: {any: any})` - Used to transition to a new location `loc`. `args_` can be used to pass information to the `start()` call of the new location.
 - `quit()` - Calls `stop()` for current location and `cleanup()` for all locations. 
-- `update(target_fps: int, show_fps: bool = False, debug: bool = False, post_processing: func(np.ndarray) -> ndarray = None) -> None` - Updates locations. Updates `events`, passing `target_fps`. `show_fps` enables an fps counter in the topleft corner, `debug` toggles some debug visuals, and `post_processing` accepts a NumPy transformation function. The post-processing is applied after all `update()` and `draw()` calls.
+- `update(target_fps: int, show_fps: bool = False, debug: bool = False, post_processing: func(np.ndarray) -> ndarray = sky.PostProcessing.none) -> None` - Updates locations. Updates `events`, passing `target_fps`. `show_fps` enables an fps counter in the topleft corner, `debug` toggles some debug visuals, and `post_processing` accepts a NumPy transformation function. The post-processing is applied after all `update()` and `draw()` calls.
+
+# *class* PostProcessing
+
+Small collection of post processing functions to try. Requires `opencv-python` to be installed.
+
+Example usage:
+```
+self.sky.update(60, post_processing=sky.PostProcessing.vhs)
+```
+
+## Static Methods
+
+- `none`
+- `blur`
+- `greyscale`
+- `noise`
+- `letterbox`
+- `cel_shading`
+- `flipup`
+- `fliplr`
+- `rotate90`
+- `rotate270`
+- `vhs`
+- `emboss`
+- `sharpen`
+- `bgr2rgb`
