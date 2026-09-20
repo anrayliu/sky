@@ -7,7 +7,7 @@ class Game(sky.Location):
     def __init__(self, sky_obj) -> None:
         super().__init__(sky_obj)
 
-        self.button = sky.Button((200, 0, 200, 100), "hi", cam=self.cam)
+        self.button = sky.Button((200, 0, 200, 100), "text here", cam=self.cam)
 
     def update(self, dt: float) -> None:
         self.cam.update(self.button.rect.center, dt)
@@ -40,7 +40,7 @@ class Main:
         pygame.init()
 
         self.win = pygame.display.set_mode((800, 600))
-        pygame.display.set_caption("test")
+        pygame.display.set_caption("sky demo")
 
         try:
             pygame.display.set_icon(pygame.image.load("assets\\icon.png"))
@@ -54,7 +54,7 @@ class Main:
     def run(self):
         running = True
         while running:
-            self.sky.update(60, post_processing=sky.PostProcessing.vhs)
+            self.sky.update(60, post_processing=sky.PostProcessing.none)
             if self.sky.events.quit:
                 running = False
 

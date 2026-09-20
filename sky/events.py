@@ -51,7 +51,7 @@ class Events:
     def get_fps(self) -> int:
         return round(self._clock.get_fps())
 
-    def add_event_handler(self, event: int, handler: Callable[[pygame.Event], any]) -> None:
+    def add_event_handler(self, event: int, handler: Callable[[pygame.Event], None]) -> None:
         self._event_handlers[event] = handler
 
     def update(self, target_fps: int) -> float:

@@ -50,9 +50,9 @@ class Camera:
 
             self._initial_force += (0 - self._initial_force) / self._shake_duration * dt
 
-    def update(self, pos: Tuple[int, int], dt: float, speed: int = 15) -> None:
-        self._x += (pos[0] - self._x) / speed * dt
-        self._y += (pos[1] - self._y) / speed * dt
+    def update(self, pos: Tuple[int, int], dt: float, steps: int = 15) -> None:
+        self._x += (pos[0] - self._x) / steps * dt
+        self._y += (pos[1] - self._y) / steps * dt
 
         self._rect.centerx = self._x
         self._rect.centery = self._y
@@ -62,23 +62,26 @@ class Camera:
 
         self._handle_shake(dt)
 
-    def shake(self, initial_force: int = 10, x_multiplier: int = 5, y_multiplier: int = 5, shake_duration: int = 10) -> None:
+    def shake(self, initial_force: int = 10, x_multiplier: int = 5, y_multiplier: int = 5, steps: int = 10) -> None:
         self._timerx = random.uniform(0, 6.28)
         self._timery = random.uniform(0, 6.28)
 
         self._initial_force = initial_force
         self._x_mult = x_multiplier
         self._y_mult = y_multiplier
-        self._shake_duration = shake_duration
+        self._shake_duration = steps
 
     def reset(self, size: Union[None, Tuple[int, int]] = None, restriction: Union[None, pygame.Rect] = None, 
-              stop_shake: bool = False):
+              stop_shake: bool = False, pos: Union[None, Tuple[int, int]] = None):
         if size is not None:
             self._rect.w = size[0]
             self._rect.h = size[1]
 
         if restriction is not None:
             self._restriction = restriction
+
+        if pos is not None:
+            self.update(pos, 1, 1)
 
         if stop_shake:
             self._initial_force = 0
