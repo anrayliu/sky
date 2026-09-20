@@ -151,6 +151,13 @@ Represents a single game state. Users are meant to create their own game state c
 
 - `sky: sky.Sky` - Global sky object.
 
+## Properties
+
+- `graphics: sky.Graphics` - Alias to `graphics` from sky object.
+- `events: sky.Events` - Alias to `events` from sky object.
+- `cam: sky.Camera` - Alias to `cam` from sky object.
+- `win: pygame.Surface` - Alias to `win` from sky object.
+
 ## Methods
 
 - `start(args_: {any: any})` - Automatically called when location starts. `args_` contains information passed from the previous location. `"sky.previous_location"` will always contain the name of the previous location or `None` if this location is the first.

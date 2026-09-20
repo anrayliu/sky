@@ -4,12 +4,28 @@ from .sky import Sky
 
 class Location:
     def __init__(self, sky: Sky) -> None:
-        self.graphics = sky.graphics
-        self.events = sky.events
-        self.win = sky.win
-        self.cam = sky.cam
+        self._graphics = sky.graphics
+        self._events = sky.events
+        self._win = sky.win
+        self._cam = sky.cam
 
         self._switch_func = sky.set_location
+
+    @property
+    def graphics(self):
+        return self._graphics
+
+    @property
+    def events(self):
+        return self._events
+
+    @property
+    def cam(self):
+        return self._cam
+
+    @property
+    def win(self):
+        return self._win
 
     # called on location startup
     def start(self, args_: dict) -> None:
