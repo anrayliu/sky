@@ -63,6 +63,10 @@ class Sky:
         if self._location is not None:
             self._locations[self._location].stop()
 
+        if args_ is None:
+            args_ = {}
+        args_["sky.previous_location"] = self._location
+
         self._location = loc
         self._locations[self._location].start(args_)
 

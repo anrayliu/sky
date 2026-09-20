@@ -12,7 +12,7 @@ class Location:
         self._switch_func = sky.set_location
 
     # called on location startup
-    def start(self, args_: Union[None, dict]) -> None:
+    def start(self, args_: dict) -> None:
         pass
 
     # called on transition to different location

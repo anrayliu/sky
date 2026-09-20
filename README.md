@@ -123,13 +123,13 @@ Still a WIP, and some parts may not be fully clear, but in this AI-era, it shoul
 
 ## Methods
 
-- `start(args_: {any: any})` - Automatically called when location starts. `args_` contains information passed from the previous location.
+- `start(args_: {any: any})` - Automatically called when location starts. `args_` contains information passed from the previous location. `"sky.previous_location"` will always contain the name of the previous location or `None` if this location is the first.
 - `stop()` - Automatically called when location stops (e.g. transition to a different location).
 - `scale(new_size: (int, int))` - Automatically called when window is resized.
 - `cleanup()` - Automatically called on app shutdown.
 - `update(dt: float)` - Automatically called every frame. Game logic goes here. The delta time is also automatically passed.
 - `draw()` - Conventional for drawing-related code to go in here. This is _not_ automatically called and is the responsibility of `update()`. This method exists mostly for organizational reasons (separating logic and drawing makes it easier to implement features like pausing), as there's nothing inherently special about this.
-- `set_location(loc: str, args_: {any: any})` - Wrapper for `Sky.set_location`.
+- `set_location(loc: str, args_: {any: any})` - Alias to `Sky.set_location`.
 
 # *class* Sky(win: pygame.Surface)
 
